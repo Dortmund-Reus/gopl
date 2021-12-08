@@ -11,12 +11,16 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"runtime"
 	"strings"
 	"time"
 )
 
 //!+
 func echo(c net.Conn, shout string, delay time.Duration) {
+	buf := make([]byte, 1000)
+	runtime.Stack(buf, false)
+	fmt.Println(string(buf))
 	fmt.Fprintln(c, "\t", strings.ToUpper(shout))
 	time.Sleep(delay)
 	fmt.Fprintln(c, "\t", shout)
@@ -26,6 +30,7 @@ func echo(c net.Conn, shout string, delay time.Duration) {
 
 func handleConn(c net.Conn) {
 	input := bufio.NewScanner(c)
+	// Scan() 默认对每行进行读取，可利用for语句进行循环遍历文件
 	for input.Scan() {
 		echo(c, input.Text(), 1*time.Second)
 	}

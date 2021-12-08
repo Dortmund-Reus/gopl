@@ -64,6 +64,7 @@ loop:
 			}
 			nfiles++
 			nbytes += size
+			//printDiskUsage(nfiles, nbytes)
 		case <-tick:
 			printDiskUsage(nfiles, nbytes)
 		}

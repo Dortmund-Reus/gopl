@@ -11,11 +11,15 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"runtime"
 	"strings"
 	"time"
 )
 
 func echo(c net.Conn, shout string, delay time.Duration) {
+	buf := make([]byte, 1000)
+	runtime.Stack(buf, false)
+	fmt.Println(string(buf))
 	fmt.Fprintln(c, "\t", strings.ToUpper(shout))
 	time.Sleep(delay)
 	fmt.Fprintln(c, "\t", shout)
